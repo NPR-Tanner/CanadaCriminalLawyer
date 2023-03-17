@@ -1,0 +1,63 @@
+/* font-family: 'Oxygen', sans-serif;
+font-family: 'PT Sans', sans-serif; */
+/*#titlebar {
+    background-color: #F8F8F8;
+}*/
+
+/* Containers */
+#titlebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.titleSocials {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+li {
+    margin-right: 16px;
+    display: inline;
+}
+
+li p {
+    display: inline;
+}
+
+p {
+    
+    font-size: 14px;
+    line-height: 30px;
+    color: #383838;
+}
+
+a { 
+    font-size: 14px;
+    line-height: 26px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+button {
+    background-color: #a48544;
+    border: none;
+    padding: 5px 10px;
+    margin: 0 10px;
+}
+
+button:hover {
+    background-color: #4c5a74;
+}
+
+/*ul, li, a {
+    display: inline;
+}*/
+
+.widgetPhoneNumber {
+    color: #383838;
+    font-weight: bold;
+}
+/* Border-radius: 30px */

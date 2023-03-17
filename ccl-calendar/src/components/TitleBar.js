@@ -1,8 +1,8 @@
 import React from 'react';
 import './../css/TitleBar.css';
-import Instagram from './../assets/instagram-hdr.png'
-import YouTube from './../assets/youtube-hdr.png'
-import LinkedIn from './../assets/linkedin-hdr.png'
+import Instagram from './../assets/instagram-ftr.png'
+import YouTube from './../assets/youtube-ftr.png'
+import LinkedIn from './../assets/linkedin-ftr.png'
 
 const TitleBar = () => {
     return (
@@ -16,7 +16,7 @@ const TitleBar = () => {
                     <li><a href="https://www.instagram.com/canadacriminallawyer"><img src={Instagram} alt="Canada Criminal Lawyer Instagram" width="23px" /></a></li>
                     <li><a href="https://www.youtube.com/channel/UCABALDoDJE9Aqj9kSpxMQyg"><img src={YouTube} alt="Canada Criminal Lawyer YouTube" width="29px" /></a></li>
                     <li><a href="https://www.linkedin.com/company/42823021"><img src={LinkedIn} alt="Canada Criminal Lawyer LinkedIn" width="25px" /></a></li>
-                    <li>Licensed Criminal Defence Lawyers Across Canada - <a href="tel:8555851777">(855) 585-1777</a></li>
+                    <li><p className="titleP">Licensed Criminal Defence Lawyers Across Canada - <a className="widgetPhoneNumber" href="tel:8555851777">{`(855) 585-1777`}</a></p></li>
                 </ul>
             </div>  
         </section>
