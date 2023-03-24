@@ -1,0 +1,44 @@
+/* Nested Submenu */
+.nested-submenu-link {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 17px;
+}
+
+.nested-submenu-link {
+    font-size: 17px;
+}
+
+.mobile-submenu-parent-link {
+    font-size: 17px;;
+}
+
+.nested-link {
+    color: #ffffff;
+    line-height: 40px;
+    font-size: 15.5px;
+}
+
+
+
+.mobile-submenu-parent-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-submenu-parent-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Nested Dropdown Menu */
+.nested-submenu-container {
+    display: flex;
+}
+
+.nested-dropdown-menu {
+    padding-left: 80px;
+}

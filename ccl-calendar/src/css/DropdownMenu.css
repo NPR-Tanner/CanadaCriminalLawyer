@@ -1,0 +1,54 @@
+/* Ensuring the button is snug to the far right of the page */
+#desktopMenu li:last-child {
+    margin-right: 0;
+}
+
+/* Dropdown Buttons */
+.dropdown-btn {
+    border-radius: 5px;
+    padding: 0px 30px;
+    background-color: #c4b598;
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 36.1px;
+}
+
+.dropdown-btn:hover {
+    color: #383838;
+}
+
+.fa-angle-down {
+    position: relative;
+    padding-left: 10px;
+    top: 3px;
+    /* Making the down arrow appear lighter (not bold) 1px makes it too thin */
+    -webkit-text-stroke: 0.5px #c4b598;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    position: absolute;
+    background-color: #c4b598;
+}
+
+.dropdown-menu li {
+    display: block;
+    min-width: 200px;
+}
+
+/* Submenu Links */
+
+.submenu-link {
+    color: #ffffff;
+    display: block;
+    font-size: 15px;
+    font-family: 'PT Sans', sans-serif;
+    padding-left: 30px;
+    padding-right: 15px;
+    width: 200px;
+}
+
+.submenu-link:hover {
+    text-decoration: none;
+    color: #383838;
+}
