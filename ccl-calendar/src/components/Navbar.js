@@ -16,8 +16,8 @@ const NavigationBar = () => {
     return (
       <nav>
         <TitleBar />
-        {/*<MobileNavigation />*/}
-        <DesktopNavigation />
+        <MobileNavigation />
+        {/*<DesktopNavigation />*/}
       </nav>
        
     );
