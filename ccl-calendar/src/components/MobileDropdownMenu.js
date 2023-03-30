@@ -14,8 +14,6 @@ function MobileDropdownMenu(props) {
         setMenuOpen(!menuOpen);
     }
 
-    console.log(props.submenu);
-
     return (
         <div className="mobile-dropdown-container">
             <div className="mobile-parent-container">

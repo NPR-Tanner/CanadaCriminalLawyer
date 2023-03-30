@@ -3,6 +3,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    background-color: #ffffff;
 }
 
 .mobile-logo {
@@ -79,6 +80,20 @@
 .mobile-nav-logo {
     width: 75px;
     height: auto;
+}
+
+.mobile-nav-icon-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mobile-nav-icon-row i:not(:last-child) {
+    margin-right: 5px;
+}
+
+.mobile-nav-icon-row i:first-child {
+    margin-right: 10px;
 }
 
 @media screen and (min-width: 550px) {

@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import './../css/MobileNav.css';
 import LogoMobile from './../assets/ccl-logo-mobilel.png'
 import MobileDropdownMenu from "./MobileDropdownMenu";
-import {faq, penaltiesAndSentencing, blog, criminalOffences, resources } from './Sitemap'
+import {faq, penaltiesAndSentencing, blog, criminalOffences, resources } from './Sitemap';
+import GlobalContext from "../context/GlobalContext";
 
 const MobileNavigation = () => {
     const [click, setClick] = useState(false);
     const handleClick = () => setClick(!click);
+    const [showLogin, setShowLogin] = useState(false);
+    const [showRegister, setShowRegister] = useState(false);
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const [showAccount, setShowAccount] = useState(false);
+    const {loggedIn} = useContext(GlobalContext);
 
     return (
         <div className="mobile-nav-container page-row">
@@ -32,8 +38,16 @@ const MobileNavigation = () => {
                 </ul>
             </div>
             
-            <div className="mobile-nav-icon" onClick={handleClick}>
+            <div className="mobile-nav-icon mobile-nav-icon-row" onClick={handleClick}>
                 <i className={click ? "fas fa-times" : "fas fa-bars"}></i>
+                {(loggedIn == false) ? (
+                <React.Fragment>
+                    <i class="fa fa-user-plus" aria-hidden="true" onClick={() => setShowRegister(true)}></i>
+                    <i class="fa fa-sign-in" aria-hidden="true" onClick={() => setShowLogin(true)}></i>
+                </React.Fragment>
+            ) : (
+                <i class="fa-solid fa-circle-user" onClick={() => setShowAccount(true)}></i>
+            )}
             </div>
         </div>
     )

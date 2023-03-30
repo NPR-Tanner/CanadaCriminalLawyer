@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Font Families: 
 'Oxygen', sans-serif;
 font-family: 'PT Sans', sans-serif; */

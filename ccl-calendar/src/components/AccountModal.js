@@ -46,9 +46,24 @@ const AccountModal = (props) => {
                     </div>
 
                     <div className="account-row">
-                        <label for="province">Province</label>
-                        <div className="input-container">
-                            <input className="inputField" type="text" placeholder="Province" name="province" id="province" readonly/>
+                        <div>
+                        <label for="provinces">Province</label>
+                        <select id="provinces" name="provinces">
+                            <option value="">Select a province</option>
+                            <option value="AB">Alberta</option>
+                            <option value="BC">British Columbia</option>
+                            <option value="MB">Manitoba</option>
+                            <option value="NB">New Brunswick</option>
+                            <option value="NL">Newfoundland and Labrador</option>
+                            <option value="NS">Nova Scotia</option>
+                            <option value="NT">Northwest Territories</option>
+                            <option value="NU">Nunavut</option>
+                            <option value="ON">Ontario</option>
+                            <option value="PE">Prince Edward Island</option>
+                            <option value="QC">Quebec</option>
+                            <option value="SK">Saskatchewan</option>
+                            <option value="YT">Yukon</option>
+                        </select>
                             <button><i class="fa fa-pencil" aria-hidden="true"></i></button>
                         </div>
                     </div>
