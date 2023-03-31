@@ -11,7 +11,13 @@ const GlobalContext = React.createContext({
     screenSize: '',
     setScreenSize: () => {},
     loggedIn: false,
-    setStatus: () => {} 
+    setStatus: () => {},
+    showLogin: false,
+    setShowLogin: () => {},
+    showRegister: false,
+    setShowRegister: () => {},
+    showForgotPassword: false, 
+    setShowForgotPassword: () => {},
 })
 
 export default GlobalContext

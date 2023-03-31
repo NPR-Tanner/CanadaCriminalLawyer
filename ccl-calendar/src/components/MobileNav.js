@@ -4,15 +4,19 @@ import LogoMobile from './../assets/ccl-logo-mobilel.png'
 import MobileDropdownMenu from "./MobileDropdownMenu";
 import {faq, penaltiesAndSentencing, blog, criminalOffences, resources } from './Sitemap';
 import GlobalContext from "../context/GlobalContext";
+import LoginModal from './LoginModal';
+import RegisterModal from './RegisterModal';
+import ForgotPasswordModal from './ForgotPasswordModal';
+import AccountModal from './AccountModal';
+
 
 const MobileNavigation = () => {
+    const { loggedIn, setStatus, showLogin, setShowLogin, showRegister, setShowRegister, showForgotPassword, setShowForgotPassword } = useContext(GlobalContext);
+    
     const [click, setClick] = useState(false);
     const handleClick = () => setClick(!click);
-    const [showLogin, setShowLogin] = useState(false);
-    const [showRegister, setShowRegister] = useState(false);
-    const [showForgotPassword, setShowForgotPassword] = useState(false);
     const [showAccount, setShowAccount] = useState(false);
-    const {loggedIn} = useContext(GlobalContext);
+    const [showAccountMenu, setShowAccountMenu] = useState(false);
 
     return (
         <div className="mobile-nav-container page-row">
@@ -38,17 +42,35 @@ const MobileNavigation = () => {
                 </ul>
             </div>
             
-            <div className="mobile-nav-icon mobile-nav-icon-row" onClick={handleClick}>
-                <i className={click ? "fas fa-times" : "fas fa-bars"}></i>
-                {(loggedIn == false) ? (
-                <React.Fragment>
-                    <i class="fa fa-user-plus" aria-hidden="true" onClick={() => setShowRegister(true)}></i>
-                    <i class="fa fa-sign-in" aria-hidden="true" onClick={() => setShowLogin(true)}></i>
-                </React.Fragment>
-            ) : (
-                <i class="fa-solid fa-circle-user" onClick={() => setShowAccount(true)}></i>
+            <div className="mobile-nav-icon mobile-nav-icon-row">
+                <i className={click ? "fas fa-times" : "fas fa-bars"} onClick={handleClick}></i>
+                {/* Conditionally Render Status */}
+                {(loggedIn == true) ? (
+                    <React.Fragment>
+                        <i class="fa fa-user-plus" aria-hidden="true" onClick={() => setShowRegister(true)}></i>
+                        <i class="fa fa-sign-in" aria-hidden="true" onClick={() => setShowLogin(true)}></i>
+                    </React.Fragment>
+                ) : (
+                <div>
+                    <div onClick={e => e.stopPropagation()}>
+                        <i className="fa-solid fa-circle-user" onClick={() => setShowAccountMenu(true)}></i>
+                        <ul className={`account-dropdown-menu ${showAccountMenu && `displayAccountDropdown`}`}>
+                            <li id="closeAccountFirstItem">
+                                <i className="fas fa-times closeAccountMenu" onClick={() => setShowAccountMenu(false)}></i>
+                            </li>
+                            <li className="accountLink" id="mobileAccountSettingsLink" onClick={() => setShowAccount(true)}>
+                                Account Settings
+                            </li>
+                            <li className="accountLink" onClick={() => setStatus(false)}>Logout</li>
+                        </ul>
+                    </div>
+                </div>
             )}
             </div>
+            <AccountModal onClose={() => setShowAccount(false)} showAccount={showAccount}/>
+            <LoginModal onClose={() => setShowLogin(false)} showLogin={showLogin} />
+            <RegisterModal onRegisterClose={() => setShowRegister(false)} showRegister={showRegister} />
+            <ForgotPasswordModal onClose={() => setShowForgotPassword(false)} showForgotPassword={showForgotPassword} />
         </div>
     )
 }

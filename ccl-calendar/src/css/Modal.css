@@ -138,9 +138,27 @@
     padding-left: 5px;
 }
 
-::placeholder {
+.selectInput {
+    margin-bottom: 15px;
+    padding: 8px 5px 8px 5px;
+    width: 200px;
+}
+
+.selectInput:placeholder {
     font-family: 'PT Sans', sans-serif;
     font-size: 14px;
+    color: red;
+}
+
+.inputField::placeholder {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 14px;
+}
+
+#provinces::placeholder {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 14px;
+    color: red;
 }
 
 label {
@@ -159,7 +177,9 @@ label {
     cursor: pointer;
 }
 
-
+.form-toggle-container, .modalInterlink {
+    display: none;
+}
 
 
 

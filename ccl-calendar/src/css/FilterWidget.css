@@ -70,6 +70,8 @@
     font-size: 18px;
 }
 
+
+
 /* Add Court Time */
 .input-row {
     display: flex;
@@ -134,4 +136,25 @@
     .widgetButton:first-child {
         display: none;
     }
+}
+
+.widgetSelectInput {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    flex: 1;
+}
+
+#courtDropdown {
+    margin-right: 10px;
+}
+
+#courtRoomDropdown {
+    margin-right: 0;
+    padding-right: 0;
+}
+
+.cityList {
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
 }

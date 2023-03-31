@@ -10,11 +10,10 @@ import AccountModal from './AccountModal';
 import GlobalContext from '../context/GlobalContext';
 
 const DesktopNavigation = () => {
-    const [showLogin, setShowLogin] = useState(false);
-    const [showRegister, setShowRegister] = useState(false);
-    const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const { loggedIn, setStatus, showLogin, setShowLogin, showRegister, setShowRegister, showForgotPassword, setShowForgotPassword } = useContext(GlobalContext);
+    
     const [showAccount, setShowAccount] = useState(false);
-    const {loggedIn, setStatus} = useContext(GlobalContext);
+    const [showAccountMenu, setShowAccountMenu] = useState(false);
 
     console.log(`loggedIn is equal to ${loggedIn}`);
     return (
@@ -40,7 +39,19 @@ const DesktopNavigation = () => {
                             <li><i class="fa fa-sign-in" aria-hidden="true" onClick={() => setShowLogin(true)}></i></li>
                         </React.Fragment>
                     ) : (
-                        <li><i class="fa-solid fa-circle-user" onClick={() => setShowAccount(true)}></i></li>
+                        <li>
+                            <div 
+                                className={`account-dropdown-container`}
+                                onMouseEnter={() => setShowAccountMenu(true)}
+                                onMouseLeave={() => setShowAccountMenu(false)}
+                            >
+                                <i className="fa-solid fa-circle-user"></i>
+                                <ul className={`account-dropdown-menu ${showAccountMenu && `displayAccountDropdown`}`}>
+                                    <li className="accountLink" onClick={() => setShowAccount(true)}>Account Settings</li>
+                                    <li className="accountLink" onClick={() => setStatus(false)}>Logout</li>
+                                </ul>
+                            </div>
+                        </li>
                     )}
                 </ul>
             </div>

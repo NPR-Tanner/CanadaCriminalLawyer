@@ -52,3 +52,60 @@
     text-decoration: none;
     color: #383838;
 }
+
+/* Account Dropdown */
+/*.account-dropdown-container {
+
+}*/
+
+.account-dropdown-menu {
+    position: absolute;
+    right: 40px;
+    background-color: #ffffff;
+    display: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+
+}
+
+.displayAccountDropdown {
+    display: flex;
+    flex-direction: column;
+}
+
+.accountLink {
+    color: #383838;
+    display: block;
+    font-size: 15px;
+    font-family: 'PT Sans', sans-serif;
+    padding: 5px 20px 5px 20px;
+    width: 200px;
+    text-align: right;
+}
+
+.accountLink:first-child {
+    padding-top: 15px;
+}
+
+.accountLink:last-child {
+    padding-bottom: 15px;
+}
+
+.accountLink:first-child:hover {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.accountLink:last-child:hover {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+
+.accountLink:hover {
+    text-decoration: none;
+    background-color: #c4b598;
+    color: #ffffff;
+    cursor: pointer;
+}

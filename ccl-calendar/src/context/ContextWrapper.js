@@ -10,6 +10,9 @@ export default function ContextWrapper(props) {
     const [showEventModal, setShowEventModal] = useState(false);
     const [screenSize, setScreenSize] = useState('');
     const [loggedIn, setStatus] = useState(false);
+    const [showLogin, setShowLogin] = useState(false);
+    const [showRegister, setShowRegister] = useState(false);
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -41,7 +44,13 @@ export default function ContextWrapper(props) {
             screenSize,
             setScreenSize,
             loggedIn,
-            setStatus 
+            setStatus,
+            showLogin,
+            setShowLogin,
+            showRegister,
+            setShowRegister,
+            showForgotPassword, 
+            setShowForgotPassword,
         }}>
         {props.children}
     </GlobalContext.Provider>

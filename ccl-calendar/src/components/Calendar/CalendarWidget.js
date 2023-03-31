@@ -40,7 +40,7 @@ export default function CalendarWidget({month}) {
             {componentToDisplay}
         </div>
         <div className="widgetFooter">
-            <h3><span>Cities Displayed</span><span className="material-symbols-outlined addCity">add_box</span></h3>
+            <h3><span>Cities Displayed</span><span onClick={() => setWidgetComponent("filter")} className="material-symbols-outlined addCity">add_box</span></h3>
             {/* Icons: Remove, Hide/View */}
             <p>Regina</p>
             <p>Saskatoon</p>

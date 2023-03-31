@@ -52,7 +52,7 @@ const LoginModal = (props) => {
                 </div>
                 <div className="modal-footer">
                     <button className="modal-footer-btn">Login</button>
-                    <p>Not a member?<span className="modal-context-link" onClick={() => setShowRegister(true)}> Signup now!</span></p>
+                    <p className="modalInterlink">Not a member?<span className="modal-context-link" onClick={() => setShowRegister(true)}> Signup now!</span></p>
                 </div>
             </div>
             <RegisterModal onRegisterClose={() => setShowRegister(false)} showRegister={showRegister} />

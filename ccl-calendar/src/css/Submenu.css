@@ -42,3 +42,13 @@
 .nested-dropdown-menu {
     padding-left: 80px;
 }
+
+.submenu-link {
+    color: #ffffff;
+    display: block;
+    font-size: 15px;
+    font-family: 'PT Sans', sans-serif;
+    padding-left: 30px;
+    padding-right: 15px;
+    width: 200px;
+}

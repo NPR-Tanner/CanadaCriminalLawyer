@@ -42,11 +42,26 @@ const RegisterModal = (props) => {
                     <input className="inputField" type="text" placeholder="Enter your Last Name" name="lastName" id="lastName" required/>
 
                     <label for="city">City</label>
-                    <input className="inputField" type="text" placeholder="Enter your City" name="city" id="city" required/>
-
-                    <label for="province">Province</label>
-                    <input className="inputField" type="text" placeholder="Enter your " name="province" id="province" required/>
-
+                    <input className="inputField" type="text" placeholder="Enter your City" name="city" id="city" required/>                
+                    
+                    <label for="provinces">Province</label>
+                    <select className="selectInput" id="provinces" name="provinces" required>
+                        <option value="">Select a province</option>
+                        <option value="AB">Alberta</option>
+                        <option value="BC">British Columbia</option>
+                        <option value="MB">Manitoba</option>
+                        <option value="NB">New Brunswick</option>
+                        <option value="NL">Newfoundland and Labrador</option>
+                        <option value="NS">Nova Scotia</option>
+                        <option value="NT">Northwest Territories</option>
+                        <option value="NU">Nunavut</option>
+                        <option value="ON">Ontario</option>
+                        <option value="PE">Prince Edward Island</option>
+                        <option value="QC">Quebec</option>
+                        <option value="SK">Saskatchewan</option>
+                        <option value="YT">Yukon</option>
+                    </select>
+                   
                     <label for="email">Email Address</label>
                     <input className="inputField" type="email" placeholder="Enter your Email Address" name="email" id="email" required/>
 
@@ -63,7 +78,7 @@ const RegisterModal = (props) => {
                 </div>
                 <div className="modal-footer">
                     <button className="modal-footer-btn">Register</button>
-                    <p>Alreay have an account? <span className="modal-context-link" onClick={() => setShowLogin(true)}>Login</span></p>
+                    <p className="modalInterlink">Alreay have an account? <span className="modal-context-link" onClick={() => setShowLogin(true)}>Login</span></p>
                 </div>
             </div>
             <LoginModal onLoginClose={() => setShowLogin(false)} showLogin={showLogin} />
