@@ -8,16 +8,27 @@ const courtAttendanceSchema = new mongoose.Schema({
   },
   user_ID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     required: true,
   },
-  prosecutor: {
+  court_type: {
     type: String,
+    enum: ['Provincial Court', 'Kings Bench', 'Appeal Court'],
   },
-  description: {
+  timePeriod: {
     type: String,
+    enum: ['AM', 'PM'],
+    required: true
   },
+  time: String,
+  courtRoom: Number,
+  prosecutor: String,
+  description: String,
 });
+
+
+courtAttendanceSchema.index({ courtSitting_ID: 1, date: 1 });
+console.log(mongoose.modelNames());
 
 // Ensure that each court attendance document has a unique combination of courtSitting_ID and user_ID
 courtAttendanceSchema.index({ courtSitting_ID: 1, user_ID: 1 }, { unique: true });
@@ -30,7 +41,7 @@ courtAttendanceSchema.pre('save', async function (next) {
       throw new Error('Invalid courtSitting_ID');
     }
 
-    const user = await mongoose.model('User').findById(this.user_ID);
+    const user = await mongoose.model('Users').findById(this.user_ID);
     if (!user) {
       throw new Error('Invalid user_ID');
     }

@@ -12,7 +12,7 @@ export default function Calendar({curMonth}) {
     console.log(screenSize);
     return (
         (screenSize === 'small') ? (
-            <div className="filterWidgetContainer">
+            <div className="mobileFilterWidgetContainer">
                 <CalendarWidget month={curMonth} />
             </div>
         ) : (

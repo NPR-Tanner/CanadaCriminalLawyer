@@ -427,6 +427,15 @@
     width: 400px;
 }
 
+.mobileFilterWidgetContainer {
+  box-sizing: border-box;
+  margin-top: 20px;
+  padding-top: 0;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: calc(100% - 40px);
+}
+
 /* Calendar Header */
 .calendarHdr {
     display: flex;
@@ -501,16 +510,32 @@
     font-size: 14px;
 }
 
-/* Styling the Calendar */
 .monthContainer {
-    height: calc(100vh - 277px);
-    border: 1px solid #383838;
-    border-top: none;
+  height: auto;
 }
 
 .dayWrapper {
-    background-color: #ffffff;
+  background-color: #ffffff;
+  height: 100px;
 }
+
+@media screen and (min-width: 900px) {
+  .monthContainer {
+    height: calc(100vh - 277px);
+    border: 1px solid #383838;
+    border-top: none;
+  }
+
+  .dayWrapper {
+    background-color: #ffffff;
+    height: auto;
+  }
+}
+
+/* Styling the Calendar */
+
+
+
 
 .calDD {
     text-align: right;

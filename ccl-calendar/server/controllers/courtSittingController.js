@@ -10,6 +10,11 @@ exports.getCourtSittings = async (req, res) => {
   }
 };
 
+// Retrieve all court sittings (cities) for a particular date
+exports.getCourtSittingByDate = async (req, res) => {
+  const courtSittings = await CourtSitting.find({ date: date });
+}
+
 exports.createCourtSitting = async (req, res) => {
   try {
     const courtSitting = new CourtSitting(req.body);

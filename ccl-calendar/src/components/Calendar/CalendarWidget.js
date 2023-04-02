@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './../../css/FilterWidget.css'
 import WidgetFilter from './WidgetFilter';
 import WidgetList from './WidgetList';
 import WidgetSubmitDate from './WidgetSubmitDate';
 import Month from './Month';
+import GlobalContext from '../../context/GlobalContext';
 
 export default function CalendarWidget({month}) {
-    
+    const {screenSize} = useContext(GlobalContext)
     const [activeWidgetComponent, setWidgetComponent] = useState('addEvent');
     let componentToDisplay;
 
@@ -39,12 +40,15 @@ export default function CalendarWidget({month}) {
         <div className="widgetBody">
             {componentToDisplay}
         </div>
-        <div className="widgetFooter">
-            <h3><span>Cities Displayed</span><span onClick={() => setWidgetComponent("filter")} className="material-symbols-outlined addCity">add_box</span></h3>
-            {/* Icons: Remove, Hide/View */}
-            <p>Regina</p>
-            <p>Saskatoon</p>
-        </div>
+        {screenSize !== 'small' && (
+            <div className="widgetFooter">
+                <h3><span>Cities Displayed</span><span onClick={() => setWidgetComponent("filter")} className="material-symbols-outlined addCity">add_box</span></h3>
+                {/* Icons: Remove, Hide/View */}
+                <p>Regina</p>
+                <p>Saskatoon</p>
+            </div>
+        )}
+        
     </div>
   )
 }

@@ -10,6 +10,7 @@ const userRouter = require('./router/userRoutes')
 const courtRouter = require('./router/courtRoutes')
 const courtSittingRouter = require('./router/courtSittingRoutes')
 const courtAttendanceRouter = require('./router/courtAttendanceRoutes')
+const authRouter = require('./router/authRoutes')
 
 const app = express(); // Create an instance of the Express application
 const MONGO_URL = 'mongodb+srv://npradmin:IwaAtlassaur49@nprobinson.7yutoqh.mongodb.net/CanadaCriminalLawyer';
@@ -44,6 +45,7 @@ app.use('/api/users', userRouter);
 app.use('/api/courts', courtRouter);
 app.use('/api/courtSittings', courtSittingRouter);
 app.use('/api/courtAttendance', courtAttendanceRouter);
+app.use('/auth', authRouter);
 
 // Start the server and listen on port 8000
 const server = app.listen(8000, () => {

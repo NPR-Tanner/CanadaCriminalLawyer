@@ -4,6 +4,7 @@
     flex-direction: column;
     justify-content: center;
     margin-top: 11px;
+    margin-bottom: 20px;
 }
 
 .widgetHeader {
@@ -51,9 +52,15 @@
 /* Widget Body */
 .widgetBody {
     background-color: #ffffff;
-    height: 500px;
+    height: auto;
     border: 1px solid #383838;
     border-top: none;
+}
+
+@media screen and (min-width: 900px) {
+    .widgetBody {
+        height: 500px;
+    }
 }
 
 .widgetTitle {

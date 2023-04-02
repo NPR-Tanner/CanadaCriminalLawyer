@@ -106,8 +106,15 @@ a:not() {
 
 /* Consistent Row Spacing */
 .page-row {
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: 20px;
+  padding-right: 10px;
+}
+
+@media screen and (min-width: 900px) {
+  .page-row {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
 }
 
 /* Button Styles */

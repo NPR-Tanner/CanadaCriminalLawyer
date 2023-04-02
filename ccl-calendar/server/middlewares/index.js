@@ -1,7 +1,6 @@
-import express from 'express';
-import { merge, get } from 'lodash';
-
-import { getUserBySessionToken } from '../db/users'; 
+const express = require('express');
+const { merge, get } = require('lodash');
+const { getUserBySessionToken } = require('../models/user')
 
 export const isAuthenticated = async (req, res) => {
   try {

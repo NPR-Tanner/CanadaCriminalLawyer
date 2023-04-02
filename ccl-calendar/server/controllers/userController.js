@@ -19,8 +19,22 @@ exports.getUsers = (req, res) => {
     });
 };
 
+exports.getUserByEmail = (req, res) => {
+  const {email} = req.params;
+  User.findOne({email});
+}
+
+// Use this to confirm whether user is logged in or not
+exports.getUserBySessionToken = (req, res) => {
+  const {sessionToken} = req.params;
+  UserModel.findOne({
+    'authentication.sessionToken': sessionToken,
+  });
+}
+
 exports.getUserById = (req, res) => {
-  User.findById(req.params.id)
+  const {id} = req.params;
+  User.findById(id)
     .then((user) => {
       if (!user) {
         return res.status(404).json({
@@ -51,7 +65,10 @@ exports.createUser = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  const { id } = req.params;
+  const { values } = req.body;
+
+  User.findByIdAndUpdate(id, values, { new: true })
     .then((user) => {
       if (!user) {
         return res.status(404).json({
@@ -70,7 +87,8 @@ exports.updateUser = (req, res) => {
 };
 
 exports.deleteUser = (req, res) => {
-  User.findByIdAndRemove(req.params.id)
+  const { id } = req.params;
+  User.findByIdAndDelete(id)
     .then((user) => {
       if (!user) {
         return res.status(404).json({

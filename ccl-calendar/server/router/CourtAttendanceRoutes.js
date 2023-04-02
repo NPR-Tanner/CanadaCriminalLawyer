@@ -7,7 +7,8 @@ const {
     updateCourtAttendance, 
     deleteCourtAttendance,
     getCourtAttendanceByUserId,
-    getCourtAttendanceByCity
+    getCourtAttendanceByCity,
+    getCourtAttendancesByDate
 } = require('../controllers/courtAttendanceController');
 
 courtAttendanceRouter.route('/')
@@ -24,5 +25,8 @@ courtAttendanceRouter.route('/user/:user_id')
 
 courtAttendanceRouter.route('/city/:city')
   .get(getCourtAttendanceByCity);
+
+courtAttendanceRouter.route('/courtSitting/:courtSitting_ID/attendanceDate/:year/:month/:day')
+  .get(getCourtAttendancesByDate);
 
 module.exports = courtAttendanceRouter;
