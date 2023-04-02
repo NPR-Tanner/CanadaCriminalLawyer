@@ -1,18 +1,20 @@
 const express = require('express');
-const {findUserByEmail, createNewUser} = require('../models/user');
-const {authentication, random} = require('../middlewares/helpers');
+const {findUserByEmail, createNewUser} = require('../controllers/userController');
+const {authentication, random} = require('../helpers/');
 
-export const register = async(req, res) => {
+exports.register = async(req, res) => {
   try {
-    const { email, password } = req.body;
-
+    const { email, password, first_name, last_name, province, city } = req.body;
+    console.log(`Email: ${email} Password: ${password}`)
     // Check to see if any of these fields are missing
     if (!email || !password) {
+      console.log("Email and or Pass is missing")
       return res.sendStatus(400);
     }
     
     // Check for existing user
     const existingUser = await findUserByEmail(email);
+    console.log(`Existing User: ${existingUser}`)
 
     if (existingUser) {
       return res.sendStatus(400);
@@ -25,8 +27,6 @@ export const register = async(req, res) => {
       province, 
       city,
       email,
-      phone_number,
-      user_type,
       authentication: {
         salt,
         password: authentication(salt, password),
@@ -42,7 +42,7 @@ export const register = async(req, res) => {
 }
 
 
-export const login = async (req, res) => {
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -75,3 +75,8 @@ export const login = async (req, res) => {
     return res.sendStatus(400);
   }
 };
+/*
+module.exports = {
+  register,
+  login
+}*/

@@ -5,12 +5,16 @@ const {getUsers, getUserById, createUser, updateUser, deleteUser} = require('./.
 const { isAuthenticated, isOwner } = require('../middlewares/index');
 
 userRouter.route('/')
-  .get(isAuthenticated, getUsers)
+  //.get(isAuthenticated, getUsers)
+  .get(getUsers)
   .post(createUser);
 
 userRouter.route('/:id')
-  .get(isAuthenticated, getUserById)
-  .patch(isAuthenticated, isOwner, updateUser)
-  .delete(isAuthenticated, isOwner, deleteUser);
+  .get(getUserById)
+  .patch(updateUser)
+  .delete(deleteUser);
+  //.get(isAuthenticated, getUserById)
+  //.patch(isAuthenticated, isOwner, updateUser)
+  //.delete(isAuthenticated, isOwner, deleteUser);
 
 module.exports = userRouter;

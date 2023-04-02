@@ -8,12 +8,16 @@ const {
     deleteCourtAttendance,
     getCourtAttendanceByUserId,
     getCourtAttendanceByCity,
-    getCourtAttendancesByDate
+    getCourtAttendancesByDate,
+    createCourtAttendanceWidget
 } = require('../controllers/courtAttendanceController');
 
 courtAttendanceRouter.route('/')
   .get(getAllCourtAttendances)
   .post(createCourtAttendance);
+
+courtAttendanceRouter.route('/widget')
+  .post(createCourtAttendanceWidget);
 
 courtAttendanceRouter.route('/:id')
   .get(getCourtAttendanceById)

@@ -1,8 +1,39 @@
 const CourtSitting = require('./../models/courtSittings');
+const dayjs = require('dayjs');
+
+/*exports.getCourtSittings = async (req, res) => {
+  try {
+    const courtSittings = await CourtSitting.find().populate('court_ID', 'city province');
+    return res.status(200).json(courtSittings);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Server error occurred' });
+  }
+};
+
+// Retrieve all court sittings (cities) for a particular date
+exports.getCourtSittingByDate = async (req, res) => {
+  const courtSittings = await CourtSitting.find({ date: date });
+}*/
 
 exports.getCourtSittings = async (req, res) => {
   try {
-    const courtSittings = await CourtSitting.find().populate('courtHouse', 'city province');
+    const courtSittings = await CourtSitting.find()
+    .populate({
+      path: 'courtAttendances',
+      model: 'CourtAttendance',
+      populate: {
+        path: 'user_ID',
+        model: 'Users',
+        select: 'first_name last_name'
+      }
+    })
+    .populate('court_ID');
+
+      // Log the populated courtAttendance documents
+      courtSittings.forEach(sitting => {
+        console.log(sitting.courtAttendances);
+      });
     return res.status(200).json(courtSittings);
   } catch (error) {
     console.error(error);
@@ -14,6 +45,30 @@ exports.getCourtSittings = async (req, res) => {
 exports.getCourtSittingByDate = async (req, res) => {
   const courtSittings = await CourtSitting.find({ date: date });
 }
+
+exports.getAllCourtSittingsSortedByDate = async (req, res) => {
+  try {
+    const courtSittings = await CourtSitting.find().populate('courtAttendances');
+    console.log(`courtSittings: ${courtSittings}`)
+    // Create an object to store courtSittings grouped by date
+    const courtSittingsByDate = {};
+
+    // Iterate through all courtSittings and group by date
+    courtSittings.forEach((sitting) => {
+      const date = sitting.courtDate;
+      if (!courtSittingsByDate[date]) {
+        courtSittingsByDate[date] = [sitting];
+      } else {
+        courtSittingsByDate[date].push(sitting);
+      }
+    });
+    
+    return res.status(200).json(courtSittingsByDate);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Server error occurred' });
+  }
+};
 
 exports.createCourtSitting = async (req, res) => {
   try {
@@ -30,11 +85,22 @@ exports.getCourtSittingById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const courtSitting = await CourtSitting.findById(id).populate('courtHouse', 'city province');
+    const courtSitting = await CourtSitting.findById(id)
+      .populate({
+        path: 'courtAttendances',
+        model: 'CourtAttendance',
+        populate: {
+          path: 'user_ID',
+          model: 'Users',
+          select: 'first_name last_name'
+        }
+      })
+      .populate('court_ID');
+      
     if (!courtSitting) {
       return res.status(404).json({ message: 'Court sitting not found' });
     }
-
+    console.log(dayjs(courtSitting.courtDate).format("DD-MM-YY"));
     return res.status(200).json(courtSitting);
   } catch (error) {
     console.error(error);
@@ -70,6 +136,17 @@ exports.deleteCourtSitting = async (req, res) => {
       }
   
       return res.status(204).json({ message: 'Court sitting deleted' });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Server error occurred' });
+    }
+  };
+
+  exports.deleteAllCourtSittings = async (req, res) => {
+    try {
+      await CourtSitting.deleteMany({});
+      console.log("Deleted all court sittings");
+      return res.status(204).json({ message: 'All court sittings deleted' });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Server error occurred' });

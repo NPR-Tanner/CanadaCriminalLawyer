@@ -73,13 +73,15 @@ exports.getCourtAttendanceByCity = async (req, res) => {
     try {
       //const courtSittings = await CourtSitting.find({ city: city }, '_id');
       const courtSittings = await CourtSitting.find()
-        .populate('courtHouse')
+        .populate('court_ID')
         .exec();
       console.log("--- courtSittings ---");
-      console.log(courtSittings);
   
       const filteredCourtSittings = courtSittings.filter(courtSitting => {
-        return courtSitting.courtHouse.city === city;
+        console.log(`courtSitting: ${courtSitting}`)
+        console.log(`courtSitting.court_ID: ${courtSitting.court_ID}`)
+        console.log(`courtSitting.court_ID.city: ${courtSitting.court_ID.city}`)
+        return courtSitting.court_ID.city === city;
       });
       console.log("--- filteredCourtSittings ---");
       console.log(filteredCourtSittings);
@@ -91,7 +93,7 @@ exports.getCourtAttendanceByCity = async (req, res) => {
   
       const courtSittingIds = filteredCourtSittings.map(courtSitting => courtSitting._id);
   
-      const courtAttendance = await CourtAttendance.find({ courtSitting_ID: { $in: courtSittingIds } }).populate('courtSitting_ID');
+      const courtAttendance = await CourtAttendance.find({ courtSitting_ID: { $in: courtSittingIds } }).populate('courtSitting_ID user_ID');
   
       if (!courtAttendance || courtAttendance.length === 0) {
         return res.status(404).json({ message: 'No court attendance found for city' });
@@ -104,6 +106,7 @@ exports.getCourtAttendanceByCity = async (req, res) => {
     }
 };
 
+/*
 exports.createCourtAttendance = async (req, res) => {
     //const { courtSitting_ID, user_ID, prosecutor, description } = req.body;
   
@@ -124,6 +127,71 @@ exports.createCourtAttendance = async (req, res) => {
         }
       return res.sendStatus(500);
     }
+};*/
+exports.createCourtAttendance = async (req, res) => {
+  try {
+    const courtAttendance = new CourtAttendance(req.body);
+    const savedCourtAttendance = await courtAttendance.save();
+    const courtSitting = await CourtSitting.findByIdAndUpdate(
+      courtAttendance.courtSitting_ID,
+      { $push: { courtAttendances: savedCourtAttendance._id } },
+      { new: true }
+    );
+    return res.status(201).json(savedCourtAttendance);
+  } catch (error) {
+    console.error(error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message });
+    }
+    if (error.name === 'MongoError' && error.code === 11000) {
+      return res.status(400).json({ message: 'Court attendance already exists' });
+    }
+    return res.sendStatus(500);
+  }
+};
+
+exports.createCourtAttendanceWidget = async (req, res) => {
+  try {
+    const { date, city } = req.body;
+    const dateObj = new Date(date);
+    console.log(`Month: ${dateObj.getMonth() + 1} Day: ${ dateObj.getDate()} Year: ${dateObj.getFullYear()}`)
+
+    // I think I need to find all courtsittings that match the month, day, year, populate the city field, then use the fineOne
+    const courtSitting = await CourtSitting.findOne({
+      month: dateObj.getMonth() + 1,
+      day: dateObj.getDate() + 1,
+      year: dateObj.getFullYear()
+    })
+    .populate({
+      path: 'court_ID',
+      match: { city: city }
+    })
+    .exec();
+    
+    if (!courtSitting) {
+      return res.status(400).json({ message: 'Court sitting not found' });
+    }
+    const courtAttendance = new CourtAttendance({
+      courtSitting_ID: courtSitting._id,
+      ...req.body
+    });
+    const savedCourtAttendance = await courtAttendance.save();
+    const updatedCourtSitting = await CourtSitting.findByIdAndUpdate(
+      courtSitting._id,
+      { $push: { courtAttendances: savedCourtAttendance._id } },
+      { new: true }
+    );
+    return res.status(201).json(savedCourtAttendance);
+  } catch (error) {
+    console.error(error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message });
+    }
+    if (error.name === 'MongoError' && error.code === 11000) {
+      return res.status(400).json({ message: 'Court attendance already exists' });
+    }
+    return res.sendStatus(500);
+  }
 };
 
 exports.updateCourtAttendance = async (req, res) => {

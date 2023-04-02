@@ -1,27 +1,28 @@
 const User = require('./../models/user');
 
-exports.getUsers = (req, res) => {
-  User.find()
-    .then((users) => {
-      if (!users || users.length === 0) {
-        return res.status(404).json({
-          message: 'No users found'
-        });
-      }
+exports.getUsers = async (req, res) => {
+  try {
+    console.log('We are here');
+    const users = await User.find();
 
-      return res.status(200).json(users);
-    })
-    .catch((error) => {
-      console.error(error);
-      return res.status(500).json({
-        error: 'Server error occurred'
-      });
-    });
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Server error occurred' });
+  }
 };
 
 exports.getUserByEmail = (req, res) => {
   const {email} = req.params;
   User.findOne({email});
+}
+
+exports.findUserByEmail = (email) => {
+  return User.findOne({ email });
+}
+
+exports.createNewUser = (values) => {
+  return new User(values).save().then((user) => user.toObject());
 }
 
 // Use this to confirm whether user is logged in or not
@@ -64,10 +65,23 @@ exports.createUser = (req, res) => {
     });
 };
 
-exports.updateUser = (req, res) => {
+exports.updateUser = async (req, res) => {
   const { id } = req.params;
   const { values } = req.body;
 
+  try {
+    const user = await User.findByIdAndUpdate(id, req.body, { new: true });
+
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+    console.log(user);
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Server error occurred' });
+  }
+  /*
   User.findByIdAndUpdate(id, values, { new: true })
     .then((user) => {
       if (!user) {
@@ -83,7 +97,7 @@ exports.updateUser = (req, res) => {
       return res.status(500).json({
         error: 'Server error occurred'
       });
-    });
+    });*/
 };
 
 exports.deleteUser = (req, res) => {

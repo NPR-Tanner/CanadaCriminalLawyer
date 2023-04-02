@@ -2,7 +2,7 @@ const express = require('express');
 const { merge, get } = require('lodash');
 const { getUserBySessionToken } = require('../models/user')
 
-export const isAuthenticated = async (req, res) => {
+const isAuthenticated = async (req, res) => {
   try {
     const sessionToken = req.cookies['ANTONIO-AUTH'];
 
@@ -25,7 +25,7 @@ export const isAuthenticated = async (req, res) => {
   }
 }
 
-export const isOwner = async (req, res, next) => {
+const isOwner = async (req, res, next) => {
   try {
     const { id } = req.params;
     const currentUserId = get(req, 'identity._id');
@@ -43,4 +43,9 @@ export const isOwner = async (req, res, next) => {
     console.log(error);
     return res.sendStatus(400);
   }
+}
+
+module.exports = {
+  isAuthenticated,
+  isOwner
 }

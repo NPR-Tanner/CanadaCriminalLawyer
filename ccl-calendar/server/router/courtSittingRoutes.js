@@ -1,14 +1,18 @@
 const express = require('express');
 const courtSittingRouter = express.Router();
-const {getCourtSittings, createCourtSitting, getCourtSittingById, updateCourtSitting, deleteCourtSitting} = require('./../controllers/courtSittingController');
+const {getCourtSittings, createCourtSitting, getCourtSittingById, updateCourtSitting, deleteCourtSitting, deleteAllCourtSittings, getAllCourtSittingsSortedByDate} = require('./../controllers/courtSittingController');
 
 courtSittingRouter.route('/')
   .get(getCourtSittings)
-  .post(createCourtSitting);
+  .post(createCourtSitting)
+  .delete(deleteAllCourtSittings);
 
 courtSittingRouter.route('/:id')
   .get(getCourtSittingById)
   .patch(updateCourtSitting)
   .delete(deleteCourtSitting);
+
+courtSittingRouter.route('/date')
+  .get(getAllCourtSittingsSortedByDate);
 
 module.exports = courtSittingRouter;
