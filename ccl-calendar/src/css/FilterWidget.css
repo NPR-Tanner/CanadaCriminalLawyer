@@ -165,3 +165,7 @@
     -webkit-columns: 2;
     -moz-columns: 2;
 }
+
+.timePeriodCol {
+    margin-left: 10px;
+}

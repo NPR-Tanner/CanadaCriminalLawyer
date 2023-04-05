@@ -13,6 +13,11 @@ export default function ContextWrapper(props) {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
     const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const [dummyVar, setDummyVar] = useState(false);
+    const [baseURL, setBaseURL] = useState('http://localhost:8000/');
+    const [userID, setUserID] = useState({});
+    const [userCourtDates, setUserCourtDates] = useState([]);
+    const [filters, setFilters] = useState({court_type: ['Provincial Court', 'Kings Bench'], cities: ['Regina']})
 
     useEffect(() => {
         const handleResize = () => {
@@ -30,6 +35,31 @@ export default function ContextWrapper(props) {
           handleResize();
           window.addEventListener('resize', handleResize);
           return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+      const token = localStorage.getItem("sessionToken");
+      const userCourtDateToken = localStorage.getItem("userCourtDateToken");
+      const userFilters = localStorage.getItem("filters");
+
+      if (token) {
+        setStatus(true);
+        setUserID(JSON.parse(token));
+        console.log(`userID token: ${JSON.parse(token)}`);
+
+        if (userCourtDateToken) {
+          setUserCourtDates(JSON.parse(userCourtDateToken));
+          console.log(`User Court Dates Token: ${JSON.parse(userCourtDateToken)}`);
+        }
+
+        if (userFilters) {
+          setFilters(JSON.parse(userFilters));
+          console.log(`User filters: ${JSON.parse(userFilters)}`)
+        }
+
+      } else {
+        setStatus(false);
+      }
     }, []);
 
   return (
@@ -51,6 +81,15 @@ export default function ContextWrapper(props) {
             setShowRegister,
             showForgotPassword, 
             setShowForgotPassword,
+            dummyVar,
+            setDummyVar,
+            baseURL,
+            userID,
+            setUserID,
+            userCourtDates,
+            setUserCourtDates,
+            filters,
+            setFilters
         }}>
         {props.children}
     </GlobalContext.Provider>

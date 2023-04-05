@@ -1,15 +1,126 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import './../../css/FilterWidget.css'
+import { saskatchewan } from '../../util/cities';
+import GlobalContext from '../../context/GlobalContext';
 
 export default function WidgetSubmitDate() {
+  const [errorMessage, showErrorMessage] = useState(true);
+  const [successMessage, showSuccessMessage] = useState(false);
+  const {baseURL, userID} = useContext(GlobalContext);
+
+  const [formData, setFormData] = useState({
+    city: "",
+    date: "",
+    court_type: "",
+    timePeriod: "",
+    time: "",
+    courtRoom: 0,
+    prosecutor: "",
+    description: ""
+  });
+
+  const handleChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  }
+
+  async function handleSubmit (event) {
+    if (!event.target.checkValidity()) {
+      // If the form is not valid, show the native validation error message
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    console.log("Submit Action");
+    event.preventDefault();
+
+    // Match the city to the city ID
+    const court_ID = saskatchewan[formData.city];
+    console.log(`CourtID = ${court_ID}`)
+
+    // Convert Date to something that can be converted to a date obj
+    
+
+    // First, I need to fetch all courtSittings for a specific city
+    const courtSittingsResponse = await fetch(`http://localhost:8000/api/courtSittings/city/${court_ID}`);
+    const courtSittings = await courtSittingsResponse.json();
+    console.log(`Court Sittings: ${courtSittings}`)
+
+    // Second, I need to get the courtSitting_ID by matching the submitted date to the sitting date
+    const submittedDate = new Date(formData.date);
+    console.log(`Date: ${submittedDate}`)
+    const submittedDateWithoutTime = new Date(submittedDate.setHours(0, 0, 0, 0));
+
+    const courtSitting = courtSittings.find(sitting => {
+      const sittingDate = new Date(sitting.year, sitting.month - 1, sitting.day);
+      const sittingDateWithoutTime = new Date(sittingDate.setHours(0,0,0,0));
+      //console.log(`Sitting Date: ${sittingDate}`)
+      //console.log(`Submitted Date - getTime: ${submittedDate.getTime()}`)
+      //console.log(`sittingDate.getTime: ${sittingDate.getTime()}`)
+      return submittedDateWithoutTime.getTime() === sittingDateWithoutTime.getTime();
+    })
+
+    console.log(`Court Sitting: ${courtSitting}`)
+
+    // If a matching courtSitting is found, extract its ID, otherwise return an error message
+    if (!courtSitting) {
+      console.error("No matching court sitting found for the submitted date");
+      return;
+    }
+
+    // Store the ID
+    const courtSitting_ID = courtSitting._id;
+    console.log(`courtSitting_ID: ${courtSitting_ID}`)
+
+    // Might be worth storing sitting IDs in a date object
+
+    // Third, I can create a POST request to submit the form
+    // Make a POST request to submit the form
+    const courtAttendanceResponse = await fetch("http://localhost:8000/api/courtAttendance", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        courtSitting_ID,
+        user_ID: userID,
+        prosecutor: formData.prosecutor,
+        description: formData.description,
+        timePeriod: formData.timePeriod,
+      }),
+    });
+
+    const courtAttendanceResult = await courtAttendanceResponse.json();
+
+    if (courtAttendanceResult) {
+      console.log("Form submitted successfully");
+      console.log(courtAttendanceResult);
+    } else {
+      console.error("Error submitting form");
+    }
+  }
+
   return (
     <div className="widgetWrapper">
-      <h2 className="widgetTitle">Add Court Date</h2>
-      <form action="">
-        <label htmlFor="cityDropdown" className="widgetLabel">Select City</label>
+      <h2 className="widgetTitle">Add Court Appearance</h2>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="city" className="widgetLabel">Select City</label>
         <div className="input-row">
-          <input className="widgetInput" type="text" placeholder="Saskatchewan" readOnly />
-          <select className="widgetSelectInput" id="cityDropdown" name="cityDropdown" required>
+          <input 
+            className="widgetInput" 
+            type="text" 
+            placeholder="Saskatchewan" 
+            name="province" 
+            id="submitProvince" 
+            readOnly 
+          />
+          <select 
+            className="widgetSelectInput" 
+            id="submitCity" 
+            name="city" 
+            value={formData.city} 
+            onChange={handleChange} 
+            required
+          >
             <option value="">Select a city</option>
             <option value="Estevan">Estevan</option>
             <option value="Kindersley">Kindersley</option>
@@ -27,24 +138,77 @@ export default function WidgetSubmitDate() {
 
         </div>
 
-        <label htmlFor="" className="widgetLabel">Select Date</label>
+        
         <div className="input-row">
           {/* A datepicker would be very useful here. */}
-          <input type="date" id="courtDate"/>
+          <div className="flex-col">
+            <label htmlFor="" className="widgetLabel">Select Date</label>
+            <input 
+              type="date" 
+              id="submitDate" 
+              value={formData.date} 
+              onChange={handleChange} 
+              name="date" 
+              required
+            />
+          </div>
+          
+          <div className="flex-col timePeriodCol">
+            <label htmlFor="timePeriod" className="widgetLabel">Time Period</label>
+            <select
+              className="selectInput"
+              id="timePeriod"
+              name="timePeriod"
+              value={formData.timePeriod}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Time Period</option>
+              <option value="AM">Morning</option>
+              <option value="PM">Afternoon</option>
+              <option value="All Day">All Day</option>
+            </select>
+          </div>
+          
         </div>
-
 
         {/* Must Select a City to Interact with This; readOnly unless city is selected */}
         <label htmlFor="" className="widgetLabel">{`(Optional) Provide Court Information`}</label>
         <div className="input-row">
           {/* Provincial Court, Court of King's Bench */}
-          <select className="widgetSelectInput" id="courtDropdown" name="courtDropdown" readOnly>
-            <option value="">You must select a city</option>
+          <select 
+            className="selectInput" 
+            id="courtDropdown" 
+            name="courtDropdown" 
+            value={formData.court_type}
+            onChange={handleChange}
+          >
+            <option value="">Select Court</option>
+            <option value="Provincial Court">Provincial Court</option>
+            <option value="Kings Bench">Court of King's Bench</option>
+            <option value="Appeal Court">Appeal Court</option>
           </select>
           {/* Only display when a city is selected*/}
-          <select className="widgetSelectInput" id="courtRoomDropdown" name="courtRoomDropdown" readOnly>
-            <option value="">You must select a court</option>
-          </select>
+          <input 
+            className="inputField" 
+            type="text" 
+            placeholder="Prosecutor" 
+            name="prosecutor" 
+            id="prosecutor"
+            value={formData.prosecutor}
+            onChange={handleChange} 
+          />
+          
+          <input 
+            type="number"
+            className="inputField" 
+            id="courtRoom" 
+            name="courtRoom" 
+            placeholder="Enter your City" 
+            value={formData.courtRoom}
+            onChange={handleChange}
+          >
+          </input>
         </div>
 
          {/* Must Select a City to Interact with This */}
@@ -53,9 +217,10 @@ export default function WidgetSubmitDate() {
             {/* Provincial Court, Court of King's Bench */}
             <textarea id="description" className="widgetInput" type="textarea" placeholder="This is a description that is only visible to you." />
           </div>
+          <div className="input-row">
+            <button type="submit" className="modal-footer-btn">Submit</button>
+          </div>
       </form>
-
-      <h3>Court Times</h3>
     </div>
   )
 }

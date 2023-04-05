@@ -556,3 +556,158 @@
 }
 
 /* Selected Day */
+.label-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===================================== */
+/* Event Modal */
+
+/* Container for the Attendees and Add Event Buttons*/
+.event-toggle-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.event-w {
+  width: 450px;
+}
+
+/*.form-toggle-container {
+  display: none;
+}*/
+
+/* Attendee Button and Add Court Time Button */
+.attendees-btn {
+  margin-right: 0;
+  width: 50%;
+  margin-left: 40px;
+  margin-right: 2px;
+}
+
+.addCourtTime-btn {
+  margin-left: 0;
+  width: 50%;
+  margin-left: 2px;
+  margin-right: 40px;
+}
+
+.attendees-btn, .addCourtTime-btn {
+  background-color: #ffffff;
+  color: #383838;
+  border: 1px solid #a48544;
+  font-family: 'PT Sans', sans-serif;
+  border-radius: 5px;
+}
+
+.attendees-btn:hover, .addCourtTime-btn:hover {
+  background-color: #4c5a74;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+/* Active Event Button*/
+.active-event-modal-btn {
+  background-color: #a48544;
+  color: #ffffff;
+}
+
+.active-event-modal-btn:hover {
+  cursor: default;
+  background-color: #a48544;
+}
+
+.modal-save-btn {
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-family: 'PT Sans', sans-serif;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.modal-save-btn:hover {
+  background-color: #4c5a74;
+}
+
+/* Event Modal Body */
+.event-modal-body {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+/* Attendee Menu */
+.event-menu {
+  display: none;
+}
+
+.event-menu li {
+  padding-left: 20px;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 16px;
+}
+
+.showReginaAttendeeMenu {
+  display: flex;
+  flex-direction: column;
+}
+
+.showSaskatoonAttendeeMenu {
+  display: flex;
+  flex-direction: column;
+}
+
+.attendee-wrapper {
+  margin-bottom: 20px;
+}
+
+/* Event Submenu */
+.event-subheader-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-subheader-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.event-subheader-row:hover {
+  cursor: pointer;
+}
+
+
+
+.addEvent-submenu {
+  display: none;
+}
+
+.addEvent-submenu li {
+  padding-left: 20px;
+}
+
+.addEvent-submenu li div h5 {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 16px;
+}
+
+.addEvent-submenu li div p {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 14px;
+}
+
+.showSaskatoonKB, .showSaskatoonPC .showReginaKB, .showReginaPC {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}

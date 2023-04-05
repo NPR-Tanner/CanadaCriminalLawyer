@@ -48,7 +48,10 @@ const DesktopNavigation = () => {
                                 <i className="fa-solid fa-circle-user"></i>
                                 <ul className={`account-dropdown-menu ${showAccountMenu && `displayAccountDropdown`}`}>
                                     <li className="accountLink" onClick={() => setShowAccount(true)}>Account Settings</li>
-                                    <li className="accountLink" onClick={() => setStatus(false)}>Logout</li>
+                                    <li className="accountLink" onClick={() => {
+                                            localStorage.removeItem("sessionToken");
+                                            setStatus(false)
+                                        }}>Logout</li>
                                 </ul>
                             </div>
                         </li>

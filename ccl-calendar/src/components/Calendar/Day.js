@@ -1,12 +1,20 @@
 import React, { useContext } from 'react'
 import dayjs from 'dayjs'
 import GlobalContext from '../../context/GlobalContext';
+import DayLabel from './DayLabel';
 import './../../css/Calendar.css'
 
 export default function Day({ day, rowIdx, isOffMonth }) {
     //const {daySelected, setDaySelected} = useContext(GlobalContext);
-    const {daySelected, setDaySelected, setShowEventModal} = useContext(GlobalContext);
+    const {daySelected, setDaySelected, setShowEventModal, userCourtDates} = useContext(GlobalContext);
+    
 
+    const matchingCourtAppearance = userCourtDates.find((obj) => {
+        const courtDate = dayjs(obj.courtSitting_ID.courtDate).format("DD-MM-YY");
+        console.log(`Court Date: ${courtDate}`)
+        return courtDate === day.format("DD-MM-YY");
+    });
+    console.log(`Matching Object: ${matchingCourtAppearance}`)
 
     function getCurrentDayClass() {
         // comparing the value of day in this component to the current day using dayjs
@@ -36,8 +44,15 @@ export default function Day({ day, rowIdx, isOffMonth }) {
             </p>
         </div>
         
-        <div className="flex-1 cursor-pointer">
-            {""}
+        {/* Where I display the labels */}
+        <div className="flex-1 cursor-pointer label-container">
+            {
+                matchingCourtAppearance && <DayLabel courtAppearance={matchingCourtAppearance}/>
+                
+                //day.format("DD-MM-YY") == dayjs("2023-04-04").format("DD-MM-YY") && (
+                //<DayLabel />
+            //)
+            }
         </div>
     </div>
   )

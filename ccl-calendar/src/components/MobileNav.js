@@ -45,7 +45,7 @@ const MobileNavigation = () => {
             <div className="mobile-nav-icon mobile-nav-icon-row">
                 <i className={click ? "fas fa-times" : "fas fa-bars"} onClick={handleClick}></i>
                 {/* Conditionally Render Status */}
-                {(loggedIn == true) ? (
+                {(loggedIn == false) ? (
                     <React.Fragment>
                         <i class="fa fa-user-plus" aria-hidden="true" onClick={() => setShowRegister(true)}></i>
                         <i class="fa fa-sign-in" aria-hidden="true" onClick={() => setShowLogin(true)}></i>
@@ -61,7 +61,11 @@ const MobileNavigation = () => {
                             <li className="accountLink" id="mobileAccountSettingsLink" onClick={() => setShowAccount(true)}>
                                 Account Settings
                             </li>
-                            <li className="accountLink" onClick={() => setStatus(false)}>Logout</li>
+                            <li className="accountLink" onClick={() => {
+                                localStorage.removeItem("sessionToken");
+                                setStatus(false)
+                            }}>
+                                Logout</li>
                         </ul>
                     </div>
                 </div>

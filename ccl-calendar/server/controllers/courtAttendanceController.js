@@ -53,7 +53,12 @@ exports.getCourtAttendanceByUserId = async (req, res) => {
 
     try {
       const courtAttendance = await CourtAttendance.find({ user_ID: user_id })
-        .populate('courtSitting_ID')
+        .populate({
+          path: 'courtSitting_ID',
+          populate: {
+            path: 'court_ID',
+          },
+        })
         .populate('user_ID');
   
       if (!courtAttendance || courtAttendance.length === 0) {

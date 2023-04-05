@@ -22,7 +22,7 @@ const courtAttendanceSchema = new mongoose.Schema({
   },
   timePeriod: {
     type: String,
-    enum: ['AM', 'PM', 'Both'],
+    enum: ['AM', 'PM', 'All Day'],
     required: true
   },
   time: String,

@@ -10,14 +10,27 @@ const GlobalContext = React.createContext({
     setShowEventModal: () => {},
     screenSize: '',
     setScreenSize: () => {},
-    loggedIn: false,
-    setStatus: () => {},
+    // Modals
     showLogin: false,
     setShowLogin: () => {},
     showRegister: false,
     setShowRegister: () => {},
     showForgotPassword: false, 
     setShowForgotPassword: () => {},
+    dummyVar: false,
+    setDummyVar: () => {},
+    // 
+    loggedIn: false,
+    
+    setStatus: () => {},
+    baseURL: '',
+    userID: {},
+    setUserID: () => {},
+    userCourtDates: [],
+    setUserCourtDates: () => {},
+    filters: {},
+    setFilters: () => {}
+//
 })
 
 export default GlobalContext

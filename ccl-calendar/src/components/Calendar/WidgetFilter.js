@@ -1,6 +1,36 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
+import GlobalContext from '../../context/GlobalContext'
 
 export default function WidgetFilter() {
+  const {filters, setFilters} = useContext(GlobalContext);
+  //const [courtTypes, setCourtTypes] = useState(filters.court_type || ['Provincial Court', "Kings Bench"]);
+  //const [cities, setCities] = useState(filters.cities || ['Regina']);
+
+  const handleCourtTypeChange = (event) => {
+    const { name, checked } = event.target;
+    const court_type = filters.court_type;
+
+    if (checked) {
+      setFilters({...filters, court_type: [...court_type, name]});
+      localStorage.setItem("filters", JSON.stringify(filters));
+    } else {
+      setFilters({...filters, court_type: court_type.filter((court) => court !== name)});
+      localStorage.setItem("filters", JSON.stringify(filters));
+    }
+  };
+
+  const handleCityChange = (event) => {
+    const { name, checked } = event.target;
+    const cities = filters.cities;
+    if (checked) {
+      setFilters({...filters, cities: [...cities, name]});
+      localStorage.setItem("filters", JSON.stringify(filters));
+    } else {
+      setFilters({...filters, cities: cities.filter((city) => city !== name)});
+      localStorage.setItem("filters", JSON.stringify(filters));
+    }
+  };
+
   return (
     <div className="widgetWrapper">
         <h2 className="widgetTitle">Filters</h2>
@@ -12,25 +42,160 @@ export default function WidgetFilter() {
 
         <label className="widgetLabel">Display Court Types</label>
         <ul>
-          <li><input type="checkbox" name="filterProvincialCourt" id="filterProvincialCourt" value="filterProvincialCourt"/>Provincial Court</li>
-          <li><input type="checkbox" name="filterKingsBench" id="filterKingsBench" value="filterKingsBench"/>Court of King's Bench</li>
-          <li><input type="checkbox" name="filterAppealCourt" id="filterAppealCourt" value="filterAppealCourt"/>Appeal Court</li>
+          <li>
+          <input 
+            type="checkbox" 
+            name="Provincial Court" 
+            id="filterProvincialCourt" 
+            value="filterProvincialCourt" 
+            checked={filters.court_type && filters.court_type.includes('Provincial Court')}
+            onChange={handleCourtTypeChange}
+          />
+            Provincial Court</li>
+          <li>
+            <input 
+            type="checkbox" 
+            name="Kings Bench" 
+            id="filterKingsBench" 
+            value="filterKingsBench" 
+            checked={filters.court_type && filters.court_type.includes('Kings Bench')}
+            onChange={handleCourtTypeChange}
+          />
+            Court of King's Bench</li>
+          <li>
+            <input 
+            type="checkbox" 
+            name="Appeal Court" 
+            id="filterAppealCourt" 
+            value="filterAppealCourt"
+            onChange={handleCourtTypeChange}
+          />
+            Appeal Court</li>
         </ul>
 
         <label className="widgetLabel">Cities</label>
         <ul className="cityList">
-          <li><input type="checkbox" name="Estevan" id="Estevan" />Estevan</li>
-          <li><input type="checkbox" name="Kindersley" id="Kindersley" />Kindersley</li>
-          <li><input type="checkbox" name="Melville" id="Melville" />Melville</li>
-          <li><input type="checkbox" name="Moose Jaw" id="Moose Jaw" />Moose Jaw</li>
-          <li><input type="checkbox" name="North Battlefords" id="North Battlefords" />North Battlefords</li>
-          <li><input type="checkbox" name="Prince Albert" id="Prince Albert" />Prince Albert</li>
-          <li><input type="checkbox" name="Regina" id="Regina" />Regina</li>
-          <li><input type="checkbox" name="Saskatoon" id="Saskatoon" />Saskatoon</li>
-          <li><input type="checkbox" name="Swift Current" id="Swift Current" />Swift Current</li>
-          <li><input type="checkbox" name="Warman" id="Warman" />Warman</li>
-          <li><input type="checkbox" name="Weyburn" id="Weyburn" />Weyburn</li>
-          <li><input type="checkbox" name="Yorkton" id="Yorkton" />Yorkton</li>
+          <li>
+            <input 
+              type="checkbox" 
+              name="Estevan" 
+              id="Estevan"
+              value="Estevan"
+            onChange={handleCityChange} 
+            />
+            Estevan
+          </li>
+          <li>
+            <input 
+              type="checkbox" 
+              name="Kindersley" 
+              id="Kindersley"
+              value="Kindersley"
+            onChange={handleCityChange} 
+            />
+            Kindersley
+          </li>
+          <li>
+            <input 
+              type="checkbox" 
+              name="Melville" 
+              id="Melville"
+              value="Melville"
+            onChange={handleCityChange} 
+            />
+            Melville
+          </li>
+          <li>
+            <input 
+              type="checkbox" 
+              name="Moose Jaw" 
+              id="Moose Jaw"
+              value="Moose Jaw"
+            onChange={handleCityChange} 
+            />
+            Moose Jaw
+          </li>
+          <li>
+            <input 
+              type="checkbox" 
+              name="North Battlefords" 
+              id="North Battlefords"
+              value="North Battlefords"
+            onChange={handleCityChange} 
+            />
+            North Battlefords
+          </li>
+          <li>
+            <input 
+              type="checkbox" 
+              name="Prince Albert" 
+              id="Prince Albert"
+              value="Prince Albert"
+            onChange={handleCityChange} 
+            />
+            Prince Albert
+          </li>
+          <li>
+            <input 
+              type="checkbox" 
+              name="Regina" 
+              id="Regina" 
+              checked={filters.cities && filters.cities.includes('Regina')}
+              value="Regina"
+            onChange={handleCityChange}
+            />
+            Regina
+          </li>
+          <li>
+            <input 
+              type="checkbox" 
+              name="Saskatoon" 
+              id="Saskatoon"
+              value="Saskatoon"
+            onChange={handleCityChange} 
+            />
+            Saskatoon
+          </li>
+          <li>
+            <input 
+              type="checkbox" 
+              name="Swift Current" 
+              id="Swift Current"
+              value="Swift Current"
+            onChange={handleCityChange} 
+            />
+            Swift Current
+          </li>
+          <li>
+            <input 
+              type="checkbox" 
+              name="Warman" 
+              id="Warman"
+              value="Warman"
+            onChange={handleCityChange} 
+            />
+            Warman
+          </li>
+          <li>
+            <input 
+              type="checkbox" 
+              name="Weyburn" 
+              id="Weyburn"
+              value="Weyburn"
+            onChange={handleCityChange} 
+            />
+            Weyburn
+          </li>
+          <li>
+            <input 
+              type="checkbox" 
+              name="Yorkton" 
+              id="Yorkton"
+              value="Yorkton"
+            onChange={handleCityChange} 
+            />
+            Yorkton
+          </li>
         </ul>
     </div>
   )

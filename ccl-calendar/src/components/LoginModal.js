@@ -1,30 +1,113 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import RegisterModal from './RegisterModal';
 import ForgotPasswordModal from './ForgotPasswordModal';
 import './../css/Modal.css';
+import GlobalContext from "../context/GlobalContext";
 
 /* When a use clicks on 'login', it opens the Modal and passes 'login' to display the login form, vice versa for Register */
 const LoginModal = (props) => {
     const [showRegister, setShowRegister] = useState(false);
     const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const [errorMessage, showErrorMessage] = useState(false);
+    const {baseURL, loggedIn, setStatus, userID, setUserID, userCourtDates, setUserCourtDates} = useContext(GlobalContext);
+
+    const initialFormData = {
+        email: "",
+        password: "",
+    };
+
+    const resetFormData = () => {
+        setFormData(initialFormData);
+    };
+
+    const [formData, setFormData] = useState(initialFormData);
+
+    const handleChange = (event) => {
+        setFormData({ ...formData, [event.target.name]: event.target.value });
+      };
+
+    function handleSubmit(event) {
+        if (!event.target.checkValidity()) {
+            // If the form is not valid, show the native validation error message
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+        }
+
+        showErrorMessage(false);
+        event.preventDefault();
+
+        fetch(`${baseURL}auth/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+            return response.json().then(data => {
+                if (!response.ok) {
+                    showErrorMessage(true);
+                    console.error("Error data:", data);
+                    throw new Error("Network response was not ok");
+                }
+                return data;
+            });
+        })
+          .then(data => {
+
+            console.log("User logged in successfully:", data);
+            setUserID(data);
+            localStorage.setItem("sessionToken", JSON.stringify(data));
+            setStatus(true);
+            
+            showErrorMessage(false);
+            resetFormData();
+            props.onClose();
+            getUserCourtAttendance(data._id)
+          })
+          .catch(error => {
+            showErrorMessage(true);
+            console.error("Error logging in user:", error);
+          });
+    }
+
+    function getUserCourtAttendance(userID) {
+        fetch(`${baseURL}api/courtAttendance/user/${userID}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
+            .then(response => {
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        console.error("Error data:", data);
+                        throw new Error("Network response was not ok");
+                    }
+                    return data;
+                });
+            })
+            .then(data => {
+                console.log("Data fetched:", data);
+                setUserCourtDates(data);
+                localStorage.setItem("userCourtDateToken", JSON.stringify(data));
+            })
+            .catch(error => {
+              console.error("Error fetching data:", error);
+            });
+    }
 
     if (!props.showLogin) {
         return null;
     }
-    
-    /* Define State Variables 
-    const [modalOpen] = useState(false);
-    const [loginForm] = useState(false);
-    const [registerForm] = useState(false);
-
-    /* Assign Functions to Update State 
-    const [click, setClick] = useState(false);
-    const handleClick = () => setClick(!click);*/
-
-    /* Define Handler Functions */
 
     return (
-        <div className="modal" onClick={props.onClose}>
+        <div className="modal" onClick={(event) => {
+                resetFormData();
+                showErrorMessage(false);
+                props.onClose();
+        }}>
             {/* stopPropogation prevents clicks inside the content area from closing the modal.*/}
             <div className="modal-container" onClick={e => e.stopPropagation()}>
                 {/* Button to close the modal */}
@@ -34,7 +117,11 @@ const LoginModal = (props) => {
                         <i className="fas fa-times hide"></i>
                         <h2 className="modal-title">Login Form</h2>
                         {/* Bind the close button event */}
-                        <i className="fas fa-times" id="close-modal" onClick={props.onClose}></i>
+                        <i className="fas fa-times" id="close-modal" onClick={(event) => {
+                            resetFormData();
+                            showErrorMessage(false);
+                            props.onClose();
+                        }}></i>
                     </div>
                     
                     <div className="form-toggle-container">
@@ -42,18 +129,43 @@ const LoginModal = (props) => {
                         <button className="registerButton" onClick={() => setShowRegister(true)}>Register</button>
                     </div>
                 </div>
-                <div className="modal-body">
-                    <label for="email">Email Address</label>
-                    <input type="email" name="email" className="inputField" placeholder='Please enter your email address' />
+                <form className="modal-body" onSubmit={handleSubmit}>
+                    <label htmlFor="email">Email Address</label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="loginEmail" 
+                        className="inputField" 
+                        placeholder='Please enter your email address'
+                        onChange={handleChange}
+                        value={formData.email}
+                        required 
+                    />
                     
-                    <label for="email">Password</label>
-                    <input type="password" name="password" className="inputField" placeholder='Please enter your password'/>
+                    <label htmlFor="password">Password</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="loginPassword" 
+                        className="inputField" 
+                        placeholder='Please enter your password'
+                        onChange={handleChange}
+                        value={formData.password}
+                        required
+                    />
                     <p className="modal-context-link" onClick={() => setShowForgotPassword(true)}>Forgot your password?</p>
-                </div>
-                <div className="modal-footer">
-                    <button className="modal-footer-btn">Login</button>
+                
+                    <div className="modal-footer">
+                    <button type="submit" className="modal-footer-btn">Login</button>
+
+                    {errorMessage && (
+                        <p>Login unsuccessful.</p>
+                    )}
+
                     <p className="modalInterlink">Not a member?<span className="modal-context-link" onClick={() => setShowRegister(true)}> Signup now!</span></p>
                 </div>
+                </form>
+                
             </div>
             <RegisterModal onRegisterClose={() => setShowRegister(false)} showRegister={showRegister} />
             <ForgotPasswordModal onForgotPasswordClose={() => setShowForgotPassword(false)} showForgotPassword={showForgotPassword} />

@@ -41,6 +41,17 @@ exports.getCourtSittings = async (req, res) => {
   }
 };
 
+exports.getAllCourtSittingsByCourtID = async (req, res) => {
+  try {
+    const {court_ID} = req.params;
+    const courtSittings = await CourtSitting.find({ court_ID: court_ID })
+    res.status(200).json(courtSittings);
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Server error occurred' });
+  }
+}
+
 // Retrieve all court sittings (cities) for a particular date
 exports.getCourtSittingByDate = async (req, res) => {
   const courtSittings = await CourtSitting.find({ date: date });

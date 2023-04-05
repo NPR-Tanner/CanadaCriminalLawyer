@@ -1,6 +1,6 @@
 const express = require('express');
 const courtSittingRouter = express.Router();
-const {getCourtSittings, createCourtSitting, getCourtSittingById, updateCourtSitting, deleteCourtSitting, deleteAllCourtSittings, getAllCourtSittingsSortedByDate} = require('./../controllers/courtSittingController');
+const {getCourtSittings, createCourtSitting, getCourtSittingById, getAllCourtSittingsByCourtID, updateCourtSitting, deleteCourtSitting, deleteAllCourtSittings, getAllCourtSittingsSortedByDate} = require('./../controllers/courtSittingController');
 
 courtSittingRouter.route('/')
   .get(getCourtSittings)
@@ -14,5 +14,8 @@ courtSittingRouter.route('/:id')
 
 courtSittingRouter.route('/date')
   .get(getAllCourtSittingsSortedByDate);
+
+courtSittingRouter.route('/city/:court_ID')
+  .get(getAllCourtSittingsByCourtID);
 
 module.exports = courtSittingRouter;
